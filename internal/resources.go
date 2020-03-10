@@ -45,6 +45,8 @@ type HPAMetric struct {
 var propNameSanitizer = strings.NewReplacer(
 	".", "_",
 	"/", "_")
+var labelNameReplacer = strings.NewReplacer(
+	"paasta_yelp_com", "paasta")
 
 // IsExternal returns true if this metric is an external (not custom) metric.
 func (m *HPAMetric) IsExternal() bool {
@@ -112,7 +114,7 @@ func filtersFromSelector(selector labels.Selector) ([]string, error) {
 		if req.Operator() != selection.Equals {
 			return nil, fmt.Errorf("unsupported selector operator in selector '%v'", selector)
 		}
-		filters = append(filters, fmt.Sprintf(`filter("%s", "%s")`, propNameSanitizer.Replace(req.Key()), req.Values().List()[0]))
+		filters = append(filters, fmt.Sprintf(`filter("%s", "%s")`, labelNameReplacer.Replace(propNameSanitizer.Replace(req.Key())), req.Values().List()[0]))
 	}
 	return filters, nil
 }

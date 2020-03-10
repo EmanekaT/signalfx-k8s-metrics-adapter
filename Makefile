@@ -1,4 +1,4 @@
-REGISTRY?=quay.io/signalfx
+REGISTRY?=docker-dev.yelpcorp.com
 IMAGE?=k8s-metrics-adapter
 
 VERSION?=latest
